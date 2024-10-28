@@ -21,6 +21,12 @@ class grid:
         # Update positions
         self.__getitem__(pos1).set_position(pos1)
         self.__getitem__(pos2).set_position(pos2)
+    
+    def update(self):
+        for y, row in enumerate(self.grid[1:-1]):
+            for x, cell in enumerate(row):
+                self.__getitem__((x,y)).get_next_move(self)
+                
 
 class element:
     def __init__(self,name,pos):
@@ -42,7 +48,7 @@ class element:
 class solid(element):
     
     def __init__(self,name,pos):
-        super().__init__(self,name,pos)
+        super().__init__(name,pos)
         self.type=1
         self.color=(0,255,0)
         
@@ -51,4 +57,5 @@ class solid(element):
         below_cell=grid[self.x,self.y-1]
         
         if below_cell.type in [0,2,3]: # if below cell is either empty, liquid, or gas
+            # print("swapping")
             grid.swap((self.x,self.y),(self.x,self.y-1))
